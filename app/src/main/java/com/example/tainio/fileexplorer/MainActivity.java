@@ -45,8 +45,7 @@ public class MainActivity extends ActionBarActivity {
             item.add("..");
         }
 
-        for(int i=0; i < mfilelist.length; i++)
-        {
+        for(int i=0; i < mfilelist.length; i++)        {
             file = mfilelist[i];
             if(!file.isHidden() && file.canRead()){
                 if(file.isDirectory()){
