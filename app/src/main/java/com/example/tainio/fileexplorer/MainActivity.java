@@ -1,11 +1,13 @@
 package com.example.tainio.fileexplorer;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -66,23 +68,43 @@ public class MainActivity extends ActionBarActivity {
                 String[] dirDepth = nowPath.split("/");
                 String selType;
                 selType = String.valueOf(ftv.getText());
-                //Toast.makeText(getApplicationContext(), dirPath , Toast.LENGTH_SHORT).show();
-                if(selType.equals("..")){
-                        nowPath= "";
-                    for(int i=1;i<dirDepth.length-1;i++){
+                if (selType.equals("..")) {
+                    nowPath = "";
+                    for (int i = 1; i < dirDepth.length - 1; i++) {
                         nowPath = nowPath + "/" + dirDepth[i];
                     }
-                }else if(selType.endsWith(".mp3")){  //not tested
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setDataAndType(Uri.parse("file://"+ nowPath + selType),"audio/mpeg3");
-                    startActivity(intent);
-                }else{
-                    nowPath = dirPath + ftv.getText();
+                    moveDir(nowPath);
+                } else {
+                    File file = new File(dirPath + selType);
+                    if (file.isDirectory()) {
+                        nowPath = dirPath + selType;
+                        moveDir(nowPath);
+                    } else {
+                        String fullPath = dirPath + "/" + selType;
+                        fileExecute(fullPath);
+                    }
                 }
-                moveDir(nowPath);
-                //Toast.makeText(getApplicationContext(), dirDepth[Integer.parseInt(String.valueOf(dirDepth.length))-1] , Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), nowPath, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void fileExecute(String fullPath) {
+        File file = new File(fullPath);
+        String fileExtension = MimeTypeMap.getFileExtensionFromUrl(fullPath.toString());
+        String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension);
+        Toast.makeText(getApplicationContext(), mimeType ,Toast.LENGTH_SHORT).show();
+
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setDataAndType(Uri.parse(fullPath.toString()),mimeType);
+            intent.setDataAndType(Uri.fromFile(file),mimeType);
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(getApplicationContext(), "실행 할 앱이 없습니다.", Toast.LENGTH_SHORT).show();
+            moveTaskToBack(true);
+            finish();
+        }
     }
 
     private void moveDir(String dirPath){
