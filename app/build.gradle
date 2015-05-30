@@ -5,7 +5,7 @@ android {
     buildToolsVersion "21.1.2"
 
     defaultConfig {
-        applicationId "com.example.tainio.fileexplorer"
+        applicationId "com.tainio.fileexplorer"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1

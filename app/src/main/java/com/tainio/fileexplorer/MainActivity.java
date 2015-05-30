@@ -1,4 +1,4 @@
-package com.example.tainio.fileexplorer;
+package com.tainio.fileexplorer;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -101,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
             intent.setDataAndType(Uri.fromFile(file),mimeType);
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(getApplicationContext(), "½ÇÇà ÇÒ ¾ÛÀÌ ¾ø½À´Ï´Ù.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.", Toast.LENGTH_SHORT).show();
             moveTaskToBack(true);
             finish();
         }
